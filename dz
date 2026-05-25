@@ -1,0 +1,41 @@
+import requests
+from pprint import pprint
+
+url = 'https://dummyjson.com/recipes'
+params = {
+    'limit': 0,
+    'skip': 0
+}
+
+response = requests.get(url=url, params=params)
+response_json = response.json()
+recipes = response_json["recipes"]
+
+
+pizza_recipes = []
+italian_cuisine_count = 0
+max_calories_recipe = recipes[0]
+recipes_at_190 = []
+total_review_count = 0
+
+for recipe in recipes:
+
+    if 'pizza' in recipe['name'].lower():
+        pizza_recipes.append(recipe['name'])
+
+
+    if recipe['cuisine'] == 'Italian':
+        italian_cuisine_count += 1
+
+
+    if recipe['caloriesPerServing'] > max_calories_recipe['caloriesPerServing']:
+        max_calories_recipe = recipe
+
+
+    if '190' in recipe['instructions'][0]:
+        recipes_at_190.append(recipe['name'])
+
+
+    total_review_count += recipe['reviewCount']
+
+
